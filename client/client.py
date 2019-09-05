@@ -1,8 +1,8 @@
 # coding: utf-8
 
 import requests
-from feiyan.common import constant
-from feiyan.auth.signature_composer import get_timestamp, get_uuid, get_md5_base64_str, build_sign_str, sign
+from common import constant
+from auth.signature_composer import get_timestamp, get_uuid, get_md5_base64_str, build_sign_str, sign
 
 
 class DefaultClient:
@@ -10,7 +10,6 @@ class DefaultClient:
         self.__app_key = app_key
         self.__app_secret = app_secret
         self.__time_out = time_out
-        pass
 
     def execute(self, request=None):
         try:

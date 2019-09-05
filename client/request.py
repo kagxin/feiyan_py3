@@ -1,4 +1,6 @@
-from feiyan.common import constant
+from common import constant
+import time
+import json
 
 
 class Request:
@@ -6,7 +8,7 @@ class Request:
     content_length = "Content-Length"
     content_type = "Content-Type"
 
-    def __init__(self, host=None, protocol=constant.HTTP, headers=None, url=None, method=None, time_out=None):
+    def __init__(self, host=None, protocol=constant.HTTPS, headers=None, url=None, method=None, time_out=None):
         if headers is None:
             headers = {}
         self.__host = host
@@ -18,6 +20,10 @@ class Request:
         self.__content_type = None
         self.__query_str = None
         self.__protocol = protocol
+        self.__params = dict()
+        self.__cloudToken = None
+        self.__version = '1.0'
+        self.__apiVer = '1.0.0'
 
     def get_protocol(self):
         return self.__protocol
@@ -74,3 +80,45 @@ class Request:
 
     def get_body(self):
         return self.__body
+
+    def set_version(self, version):
+        self.__version = version
+
+    def get_version(self):
+        return self.__version
+
+    def set_api_ver(self, api_ver):
+        self.__apiVer = api_ver
+
+    def get_api_ver(self):
+        return self.__apiVer
+
+    def set_cloud_token(self, cloud_token):
+        self.__cloudToken = cloud_token
+
+    def get_cloud_token(self):
+        return self.__cloudToken
+
+    def add_param(self, k, v):
+        self.__params[k] = v
+
+    def set_params(self, params):
+        self.__params = params
+
+    def get_params(self):
+        return self.__params
+
+    def format_params(self):
+        body = {
+            "id": int(time.time() * pow(10, 6)),
+            "version": self.get_version(),
+            "request": {
+                "apiVer": self.get_api_ver(),
+
+            },
+            "params": self.get_params()
+        }
+        token = self.get_cloud_token()
+        if token:
+            body['request'].update({"cloudToken": self.get_cloud_token()})
+        self.set_body(json.dumps(body))

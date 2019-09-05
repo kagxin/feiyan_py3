@@ -5,7 +5,7 @@ import uuid
 import hmac
 import hashlib
 import base64
-from feiyan.common import constant
+from common import constant
 
 TIME_ZONE = "GMT"
 FORMAT_ISO_8601 = "%Y-%m-%dT%H:%M:%SZ"
